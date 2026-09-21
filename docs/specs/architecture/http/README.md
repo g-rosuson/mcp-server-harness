@@ -67,5 +67,6 @@ Each `http/<domain>/index.md` lists canonical routes and links to scenario files
 
 - [mcp/](./mcp/index.md) — `HTTP-MCP-*`
 - [echo/](./echo/index.md) — `HTTP-ECHO-*`
+- [fpl/](./fpl/index.md) — `HTTP-FPL-*`
 - [health/](./health/index.md) — `HTTP-HEALTH-*`
 - [error/](./error/index.md) — `HTTP-ERR-*`

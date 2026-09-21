@@ -17,6 +17,7 @@ FRs state **what** the system shall do. NFRs state **how well**. Routes, status 
 
 - [fr/mcp](./fr/mcp/index.md) — `FR-MCP-*`
 - [fr/echo](./fr/echo/index.md) — `FR-ECHO-*`
+- [fr/fpl](./fr/fpl/index.md) — `FR-FPL-*`
 - [fr/health](./fr/health/index.md) — `FR-HEALTH-*`
 - [nfr/security/boundary.md](./nfr/security/boundary.md) — `NFR-SEC-BND-*`
 - [nfr/reliability/process.md](./nfr/reliability/process.md) — `NFR-REL-PRC-*`
