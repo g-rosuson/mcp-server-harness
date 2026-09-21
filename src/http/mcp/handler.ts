@@ -11,7 +11,7 @@ import type { Config } from "../../config/env/types";
  * Validates the module catalog once; each POST still gets a fresh MCP server.
  */
 function createHandler(config: Config) {
-    mcp.validate();
+    mcp.validateModules();
 
     const handlerOptions = {
         responseMode: "json" as const,

@@ -10,7 +10,7 @@ const requiredEnv = {
 };
 
 describe("parseEnv", () => {
-    test("happy path on loopback fills allowed hosts from LOOPBACK_HOSTS", () => {
+    test("NFR-SEC-BND-006 NFR-REL-PRC-003 loopback defaults", () => {
         const config = parseEnv(requiredEnv);
 
         expect(config.HOST).toBe("127.0.0.1");
@@ -25,21 +25,21 @@ describe("parseEnv", () => {
         expect(config.SHUTDOWN_TIMEOUT_MS).toBe(10000);
     });
 
-    test("missing required keys fails", () => {
+    test("NFR-REL-PRC-001 missing required keys fails", () => {
         expect(() => parseEnv({})).toThrow();
     });
 
-    test("empty SENTRY_DSN is ok", () => {
+    test("NFR-REL-PRC-002 empty SENTRY_DSN is ok", () => {
         const config = parseEnv({ ...requiredEnv, SENTRY_DSN: "" });
 
         expect(config.SENTRY_DSN).toBeUndefined();
     });
 
-    test("HOST=0.0.0.0 without MCP_ALLOWED_HOSTS fails", () => {
+    test("NFR-SEC-BND-005 HOST=0.0.0.0 without MCP_ALLOWED_HOSTS fails", () => {
         expect(() => parseEnv({ ...requiredEnv, HOST: "0.0.0.0" })).toThrow();
     });
 
-    test("HOST=0.0.0.0 with MCP_ALLOWED_HOSTS succeeds", () => {
+    test("NFR-SEC-BND-005 HOST=0.0.0.0 with MCP_ALLOWED_HOSTS succeeds", () => {
         const config = parseEnv({
             ...requiredEnv,
             HOST: "0.0.0.0",
@@ -50,7 +50,7 @@ describe("parseEnv", () => {
         expect(config.MCP_ALLOWED_HOSTS).toEqual(["localhost", "example.com"]);
     });
 
-    test("SENTRY_DSN sets a default traces sample rate", () => {
+    test("NFR-REL-PRC-003 SENTRY_DSN sets a default traces sample rate", () => {
         const config = parseEnv({
             ...requiredEnv,
             SENTRY_DSN: "https://public@o0.ingest.sentry.io/1",
@@ -62,7 +62,7 @@ describe("parseEnv", () => {
         expect(config.SENTRY_TRACES_SAMPLE_RATE).toBe(0.1);
     });
 
-    test("SENTRY_ENVIRONMENT and SENTRY_RELEASE pass through", () => {
+    test("NFR-REL-PRC-003 SENTRY_ENVIRONMENT and SENTRY_RELEASE pass through", () => {
         const config = parseEnv({
             ...requiredEnv,
             SENTRY_ENVIRONMENT: "staging",
@@ -73,7 +73,7 @@ describe("parseEnv", () => {
         expect(config.SENTRY_RELEASE).toBe("1.2.3");
     });
 
-    test("SENTRY_ENVIRONMENT with a space fails", () => {
+    test("NFR-REL-PRC-004 SENTRY_ENVIRONMENT with a space fails", () => {
         expect(() => parseEnv({ ...requiredEnv, SENTRY_ENVIRONMENT: "staging us" })).toThrow();
     });
 });

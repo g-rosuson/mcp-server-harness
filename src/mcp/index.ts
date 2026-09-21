@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { name, version } from "../../package.json" with { type: "json" };
 
 import modules from "../modules";
+import type { Module } from "../modules/types";
 
 /**
  * Fresh MCP server with enrolled domain tools. HTTP transport is not this module's concern.
@@ -20,15 +21,33 @@ function createServer(): McpServer {
 }
 
 /**
- * Enrollment uniqueness. Call once when the HTTP handler is created, not per request.
+ * Throws when two enrolled modules share a `name`, or two tools share a name.
+ * MCP looks up tools by name only. Call once at boot, not per request.
  */
-function validate(): void {
-    modules.validate();
+function validateModules(modulesToValidate?: readonly Module[]): void {
+    const names = new Set<string>();
+    const toolNames = new Set<string>();
+
+    for (const domainModule of modulesToValidate || modules.list) {
+        if (names.has(domainModule.name)) {
+            throw new Error(`Duplicate module name: ${domainModule.name}`);
+        }
+
+        names.add(domainModule.name);
+
+        for (const toolName of domainModule.toolNames) {
+            if (toolNames.has(toolName)) {
+                throw new Error(`Duplicate tool name: ${toolName}`);
+            }
+
+            toolNames.add(toolName);
+        }
+    }
 }
 
 const mcp = {
     createServer,
-    validate,
+    validateModules,
 };
 
 export default mcp;
