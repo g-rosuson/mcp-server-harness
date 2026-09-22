@@ -1,6 +1,6 @@
 # mcp-server
 
-Stateless MCP 2026-07-28 Streamable HTTP server on Bun and Hono. This process is a protocol router: it validates the wire protocol, delegates to enrolled domain modules, and returns JSON. It does not authenticate callers and does not ship a domain module yet.
+Stateless MCP 2026-07-28 Streamable HTTP server on Bun and Hono. This process is a protocol router: it validates the wire protocol, delegates to enrolled domain modules, and returns JSON. It does not authenticate callers.
 
 Caller login is the consumer's job (Cursor, a backend, a gateway). This process only enforces Host/Origin allowlists.
 
@@ -41,7 +41,7 @@ Optional. Leave `SENTRY_DSN` unset or empty and the process starts without Sentr
 
 See [`src/modules/README.md`](src/modules/README.md). Add a folder that implements `DomainModule`, then append it to the array in `src/modules/index.ts`. Domain secrets stay in that module's own env — do not add them to the platform schema.
 
-A later FPL module uses the operator credentials documented in [`src/docs/fpl-authentication.md`](src/docs/fpl-authentication.md).
+The Fantasy Premier League module uses the operator credentials documented in [`src/modules/fpl/README.md`](src/modules/fpl/README.md).
 
 ## Sample `tools/list`
 
