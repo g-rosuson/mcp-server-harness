@@ -11,6 +11,12 @@ function register(server: McpServer): void {
         {
             description: "Echos back a provided message.",
             inputSchema,
+            annotations: {
+                readOnlyHint: true,
+                destructiveHint: false,
+                idempotentHint: true,
+                openWorldHint: false,
+            },
         },
         echo,
     );

@@ -13,10 +13,15 @@
     - `description` = `Echos back a provided message.`
     - `inputSchema.properties.message.type` = `string`
     - `inputSchema.required` = `["message"]`
+    - `annotations.readOnlyHint` = `true`
+    - `annotations.destructiveHint` = `false`
+    - `annotations.idempotentHint` = `true`
+    - `annotations.openWorldHint` = `false`
 
 Traces:
 
 - [FR-MCP-TLS-001](../../../requirements/fr/mcp/tools.md)
+- [FR-MCP-TLS-005](../../../requirements/fr/mcp/tools.md)
 
 ## HTTP-MCP-TLS-002 — Tool arguments rejected
 
