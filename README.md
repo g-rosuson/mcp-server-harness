@@ -82,3 +82,5 @@ Point Cursor at the running HTTP endpoint in `.cursor/mcp.json` or `~/.cursor/mc
 ```
 
 If you later launch this process from Cursor over stdio instead, put platform env in that server's `env` block.
+
+[![M8ven Score](https://m8ven.ai/badge/mcp/g-rosuson-mcp-server-harness-brn7rm?v=8bb4392b5b95c221d56131d8fdf53074)](https://m8ven.ai/mcp/g-rosuson-mcp-server-harness-brn7rm)
