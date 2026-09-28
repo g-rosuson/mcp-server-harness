@@ -3,6 +3,14 @@ services:
         build: .
         ports:
             - "3000:3000"
+        env_file:
+            - .env
+        environment:
+            # .env is the local process file and sets loopback. The published port needs every interface.
+            HOST: 0.0.0.0
+        volumes:
+            # Squad calls rotate FPL_REFRESH_TOKEN and write it back to this file.
+            - ./.env:/app/.env
         restart: unless-stopped
         healthcheck:
             test: ["CMD", "bun", "-e", 'fetch("http://127.0.0.1:3000/health/live").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))']

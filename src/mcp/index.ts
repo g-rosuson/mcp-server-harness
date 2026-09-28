@@ -4,6 +4,8 @@ import { name, version } from "../../package.json" with { type: "json" };
 import modules from "../modules";
 import type { Module } from "../modules/types";
 
+// TODO: https://modelcontextprotocol.info/docs/tutorials/writing-effective-tools/#running-an-evaluation
+
 /**
  * Fresh MCP server with enrolled domain tools. HTTP transport is not this module's concern.
  */

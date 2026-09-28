@@ -1,5 +1,5 @@
 import { readBootstrap, readEntry, readFixtures, readLeague, readLive, readPicks, readPlayerSummary, readSquad, resetFplState } from "./reads";
-import { operatorEntryId, operatorRefreshToken, setDotenvPath } from "./session";
+import { operatorEntryId, operatorRefreshToken } from "./session";
 
 export {
     operatorEntryId,
@@ -13,5 +13,4 @@ export {
     readPlayerSummary,
     readSquad,
     resetFplState,
-    setDotenvPath,
 };

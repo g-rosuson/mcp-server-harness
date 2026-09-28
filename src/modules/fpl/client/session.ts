@@ -1,11 +1,10 @@
-import { z } from "zod";
-
 import { UpstreamError } from "../../../errors";
 import { MISSING_REFRESH_TOKEN, REFRESH_TOKEN_REJECTED, UPSTREAM_NO_ACCESS_TOKEN } from "../constants/messages";
 import { replacePlaceholder } from "../helpers";
 import { fetchToken } from "./client";
 import { ACCESS_TOKEN_SKEW_MS, OIDC_CLIENT_ID } from "./constants";
 import { defaultDotenvPath, rewriteEnvFile } from "./helpers";
+import { tokenSchema } from "./schemas";
 
 import type { Session } from "./types";
 
@@ -16,31 +15,12 @@ const session: Session = {
 };
 
 /**
- * PingOne token response. `refresh_token` is absent when the server does not rotate.
- */
-const tokenSchema = z.object({
-    access_token: z.string(),
-    refresh_token: z.string().optional(),
-    expires_in: z.number().optional(),
-});
-
-let dotenvPath = defaultDotenvPath();
-
-/**
  * One in-flight refresh. Concurrent squad calls share it so PingOne rotates once.
  */
 let refreshing: Promise<string> | undefined;
 
 /**
- * Points refresh-token persistence at `path`.
- * Tests use a temp file so a rotation does not rewrite the project `.env`.
- */
-function setDotenvPath(path: string): void {
-    dotenvPath = path;
-}
-
-/**
- * Drops cached tokens and restores the dotenv path.
+ * Drops cached tokens.
  * The next call reads `FPL_REFRESH_TOKEN` from the environment again.
  */
 function clearSession(): void {
@@ -48,7 +28,6 @@ function clearSession(): void {
     session.accessToken = undefined;
     session.accessTokenExpiresAt = 0;
     refreshing = undefined;
-    dotenvPath = defaultDotenvPath();
 }
 
 /**
@@ -86,7 +65,7 @@ function persistRefreshToken(token: string): void {
     process.env.FPL_REFRESH_TOKEN = token;
 
     try {
-        rewriteEnvFile(dotenvPath, token);
+        rewriteEnvFile(defaultDotenvPath(), token);
     } catch {
         // Same-process calls already use session.refreshToken.
     }
@@ -174,4 +153,4 @@ async function exchange(): Promise<string> {
     return parsed.data.access_token;
 }
 
-export { accessToken, clearSession, dropAccessToken, operatorEntryId, operatorRefreshToken, setDotenvPath };
+export { accessToken, clearSession, dropAccessToken, operatorEntryId, operatorRefreshToken };

@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { parseEnv } from "../../config/env/env";
-import { resetFplState, setDotenvPath } from "./client";
+import { resetFplState } from "./client";
 import fpl from "./";
 import { entry } from "./tools/entry";
 import { fixtures } from "./tools/fixtures";
@@ -578,10 +578,10 @@ describe("squad", () => {
     });
 
     test("FR-FPL-SQD-005 a rotated refresh token still reads the squad", async () => {
+        const previousDirectory = process.cwd();
         const directory = mkdtempSync(join(import.meta.dir, ".tmp-"));
         const envPath = join(directory, ".env");
         writeFileSync(envPath, "FPL_REFRESH_TOKEN=original\n");
-        setDotenvPath(envPath);
         process.env.FPL_REFRESH_TOKEN = "original";
         process.env.FPL_ENTRY_ID = "77";
 
@@ -620,6 +620,8 @@ describe("squad", () => {
             return jsonResponse({ missing: url }, 500);
         });
 
+        process.chdir(directory);
+
         try {
             expectOk(await squad());
             expectOk(await squad());
@@ -627,6 +629,7 @@ describe("squad", () => {
             expect(readFileSync(envPath, "utf8")).toContain("FPL_REFRESH_TOKEN=rotated");
             expect(readFileSync(envPath, "utf8")).not.toContain("original");
         } finally {
+            process.chdir(previousDirectory);
             rmSync(directory, { recursive: true, force: true });
         }
     });
